@@ -2,7 +2,7 @@ from knn_mutual_information import select_time_delay
 from rqa_analysis import find_radii, calculate_laminarity, normalize_time_series
 from pyrqa.time_series import TimeSeries
 
-def process_segment(filtered_data, segment_start, segment_end, downsampled_rate, embedding_dims, epoch_index, target_rec1=1.0, target_rec5=5.0, max_tau=200):
+def process_segment(filtered_data, segment_start, segment_end, downsampled_rate, embedding_dims, epoch_index, target_rec1=1.0, target_rec5=5.0, max_tau=50):
     """
     Process a segment of the filtered data to calculate time delay, radii, and laminarity.
 

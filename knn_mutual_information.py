@@ -40,27 +40,28 @@ def knn_mutual_information(x, y, k=3):
     mi = hx + hy - hxy
     return mi
 
-def select_time_delay(data, max_tau, k=3):
+def select_time_delay(data, max_tau):
     """
-    Select the optimal time delay for phase space reconstruction using mutual information.
-
-    Parameters:
-    data (array-like): Input data series.
-    max_tau (int): Maximum time delay to consider.
-    k (int): Number of nearest neighbors for mutual information calculation.
-
-    Returns:
-    int: Optimal time delay.
+    Select the time delay using the first local minimum of mutual information.
     """
-    data = np.array(data)
-    previous_mi = knn_mutual_information(data, np.roll(data, 1), k)
-    print("\nCalculating mutual information with adaptive step size:")
-    for tau in range(2, max_tau + 1):
-        mi = knn_mutual_information(data, np.roll(data, tau), k)
-        print(f"Time delay {tau}: MI = {mi:.6f}")
-        if mi > previous_mi:
-            print(f"First local minimum found at time delay: {tau - 1}\n")
-            return tau - 1
-        previous_mi = mi
-    print(f"Max time delay reached: {max_tau}\n")
-    return max_tau
+    data = to_tensor(data)
+    mi_values = []
+    
+    for tau in range(1, max_tau + 1):
+        mi = knn_mutual_information(data[:-tau], data[tau:])
+        mi_values.append((tau, mi.item()))
+        print(f"Time delay {tau}: MI = {mi.item()}")
+    
+    mi_values = np.array(mi_values)
+    
+    # Finding the first local minimum
+    for i in range(1, len(mi_values) - 1):
+        if mi_values[i - 1, 1] > mi_values[i, 1] < mi_values[i + 1, 1]:
+            min_idx = i
+            print(f"First local minimum found at time delay: {mi_values[min_idx, 0]}")
+            return int(mi_values[min_idx, 0])
+    
+    # If no local minimum is found, return the time delay with the overall minimum MI
+    min_idx = np.argmin(mi_values[:, 1])
+    print(f"No local minimum found, using global minimum at time delay: {mi_values[min_idx, 0]}")
+    return int(mi_values[min_idx, 0])
