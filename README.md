@@ -42,22 +42,12 @@ Before performing RQA, the time series data is normalized to ensure that the rec
 
 3. **Check Results**: The results will be saved to a CSV file named `rqa_results.csv`. This file will contain details of the time delay, recurrence rates, radii, and laminarity for each epoch and embedding dimension.
 
-## Example
-
-Here's a step-by-step example of how the scripts work together:
-
-1. **main.py**: Orchestrates the entire process.
-2. **data_processing.py**: Reads the ABF file and downsamples the data.
-3. **segment_processing.py**: Segments the data into epochs and processes each segment.
-4. **knn_mutual_information.py**: Calculates the mutual information to find the optimal time delay.
-5. **rqa_analysis.py**: Finds the appropriate radii, normalizes the time series, and calculates laminarity.
-6. **save_results.py**: Saves the processed results to a CSV file.
 
 ## Detailed Print Statements
 
 To better understand the intermediate steps, print statements have been added to the scripts. These will output the progress and results of the binary search for radii, the time delay calculation, and the normalization process.
 
-## Versions
+## Dependencies
 
 - **Python**: 3.10.14
 - **CUDA**: 11.8
