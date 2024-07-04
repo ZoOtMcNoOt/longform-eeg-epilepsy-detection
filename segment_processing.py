@@ -2,7 +2,7 @@ from knn_mutual_information import select_time_delay
 from rqa_analysis import find_radii, calculate_laminarity, normalize_time_series
 from pyrqa.time_series import TimeSeries
 
-def process_segment(filtered_data, segment_start, segment_end, downsampled_rate, embedding_dims, epoch_index, target_rec1=1.0, target_rec5=5.0, max_tau=50):
+def process_segment(filtered_data, segment_start, segment_end, downsampled_rate, embedding_dims, epoch_index, file_name, target_rec1=1.0, target_rec5=5.0, max_tau=50):
     """
     Process a segment of the filtered data to calculate time delay, radii, and laminarity.
 
@@ -13,6 +13,7 @@ def process_segment(filtered_data, segment_start, segment_end, downsampled_rate,
     downsampled_rate (int): Downsampled rate in Hz.
     embedding_dims (list): List of embedding dimensions to use.
     epoch_index (int): Current epoch index.
+    file_name (str): Name of the file being processed.
     target_rec1 (float): Target recurrence rate for 1%.
     target_rec5 (float): Target recurrence rate for 5%.
     max_tau (int): Maximum time delay to consider.
@@ -32,6 +33,7 @@ def process_segment(filtered_data, segment_start, segment_end, downsampled_rate,
         laminarity = calculate_laminarity(time_series, average_rad)
 
         result = {
+            'file_name': file_name,
             'epoch': epoch_index,
             'embedding_dim': embedding_dim,
             'time_delay': time_delay,
@@ -42,6 +44,7 @@ def process_segment(filtered_data, segment_start, segment_end, downsampled_rate,
         }
         results.append(result)
         print(f"Epoch {epoch_index}, Embedding Dimension {embedding_dim}:")
+        print(f"  File Name: {file_name}")
         print(f"  1% Radius: {rad1}")
         print(f"  5% Radius: {rad5}")
         print(f"  Average Radius: {average_rad}")
@@ -49,9 +52,3 @@ def process_segment(filtered_data, segment_start, segment_end, downsampled_rate,
         print(f"  Laminarity: {laminarity}\n")
 
     return results
-
-def downsample(data, original_rate, target_rate):
-    # Calculate the downsampling factor and downsample the data
-    factor = original_rate // target_rate
-    print(f"\nDownsampling from {original_rate} Hz to {target_rate} Hz (factor {factor})")
-    return data[::factor], factor
