@@ -2,13 +2,13 @@
 
 ## Overview
 
-This project analyzes electroencephalography (EEG) data to identify key features such as mutual information, recurrence rate, and laminarity. The main scripts included in this project are designed to preprocess the data, calculate the necessary metrics, and save the results for further analysis. The primary goal is to use Recurrence Quantification Analysis (RQA) to identify potential markers for epilepsy.
+This project analyzes electroencephalography (EEG) data to identify key features such as mutual information, recurrence rate, and laminarity. The main scripts included in this project are designed to preprocess the data, calculate the necessary metrics, and save the results for further analysis. The primary goal is to use Recurrence Quantification Analysis (RQA) to identify potential markers for epilepsy. The future goal of this project is to use C++ to get better compute time.
 
 ## Project Structure
 
 1. **main.py**: This is the main script that orchestrates the entire process. It reads the ABF file, processes each channel, downsamples the data, and performs the RQA.
 
-2. **data_processing.py**: Contains functions for reading the ABF file, applying a low-pass filter, and downsampling the data.
+2. **data_processing.py**: Contains functions for reading the ABF file and downsampling the data.
 
 3. **segment_processing.py**: Handles the segmentation of the data and calls the relevant functions for calculating time delay, recurrence rates, and laminarity.
 
